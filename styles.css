@@ -4,6 +4,15 @@
     box-sizing: border-box;
 }
 
+/* Prevent unwanted touch behaviors */
+html, body {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    overscroll-behavior: none;
+}
+
 body {
     font-family: 'Arial Black', Arial, sans-serif;
     background: #000;
@@ -388,6 +397,104 @@ body {
     text-shadow: 1px 1px 0 #000;
 }
 
+/* Mobile Controls */
+#mobile-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    pointer-events: all;
+    z-index: 50;
+}
+
+#mobile-controls.hidden {
+    display: none !important;
+}
+
+.mobile-left, .mobile-right {
+    display: flex;
+    align-items: center;
+}
+
+/* D-Pad */
+.dpad {
+    position: relative;
+    width: 140px;
+    height: 140px;
+}
+
+.dpad-btn {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 215, 0, 0.3);
+    border: 2px solid #FFD700;
+    border-radius: 8px;
+    color: #FFD700;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.dpad-btn:active, .dpad-btn.pressed {
+    background: rgba(255, 215, 0, 0.6);
+    transform: scale(0.95);
+}
+
+.dpad-up { top: 0; left: 50%; transform: translateX(-50%); }
+.dpad-down { bottom: 0; left: 50%; transform: translateX(-50%); }
+.dpad-left { left: 0; top: 50%; transform: translateY(-50%); }
+.dpad-right { right: 0; top: 50%; transform: translateY(-50%); }
+
+/* Attack Buttons */
+.attack-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 180px;
+}
+
+.attack-btn {
+    width: 70px;
+    height: 50px;
+    background: rgba(139, 0, 0, 0.5);
+    border: 2px solid #FFD700;
+    border-radius: 8px;
+    color: #FFD700;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.attack-btn:active, .attack-btn.pressed {
+    background: rgba(139, 0, 0, 0.8);
+    transform: scale(0.95);
+}
+
+.punch-light { background: rgba(255, 100, 0, 0.5); }
+.punch-heavy { background: rgba(255, 50, 0, 0.5); }
+.kick-light { background: rgba(0, 100, 255, 0.5); }
+.kick-heavy { background: rgba(0, 50, 255, 0.5); }
+.block-btn { 
+    grid-column: span 2; 
+    width: 100%; 
+    background: rgba(100, 100, 100, 0.5);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .screen h1 {
@@ -402,5 +509,140 @@ body {
     .menu-btn {
         font-size: 20px;
         padding: 12px 40px;
+    }
+}
+
+/* Mobile Layout */
+@media (max-width: 768px) {
+    #gameContainer {
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        max-height: none;
+    }
+    
+    #gameCanvas {
+        height: calc(100% - 200px);
+    }
+    
+    #mobile-controls:not(.hidden) {
+        display: flex !important;
+    }
+    
+    .screen h1 {
+        font-size: 32px;
+        letter-spacing: 4px;
+    }
+    
+    .screen h2 {
+        font-size: 28px;
+    }
+    
+    .menu-btn {
+        font-size: 16px;
+        padding: 10px 30px;
+    }
+    
+    .character-grid {
+        flex-direction: row;
+        gap: 20px;
+    }
+    
+    .character-portrait {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .character-name {
+        font-size: 16px;
+    }
+    
+    .controls-layout {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .player-controls h3 {
+        font-size: 20px;
+    }
+    
+    .player-controls p {
+        font-size: 14px;
+    }
+    
+    #hud {
+        padding: 10px;
+    }
+    
+    .player-name {
+        font-size: 12px;
+    }
+    
+    .health-bar {
+        height: 20px;
+    }
+    
+    #timer {
+        font-size: 32px;
+        top: 10px;
+    }
+    
+    #round-indicators {
+        top: 50px;
+        gap: 15px;
+    }
+    
+    .round-dot {
+        width: 12px;
+        height: 12px;
+    }
+    
+    #round-text {
+        font-size: 14px;
+    }
+    
+    #message {
+        font-size: 48px;
+    }
+    
+    #selection-status {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+        font-size: 16px;
+    }
+}
+
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    #mobile-controls {
+        height: 150px;
+        padding: 10px;
+    }
+    
+    .dpad {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .dpad-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+    
+    .attack-buttons {
+        width: 150px;
+        gap: 5px;
+    }
+    
+    .attack-btn {
+        width: 60px;
+        height: 40px;
+        font-size: 12px;
+    }
+    
+    #gameCanvas {
+        height: calc(100% - 150px);
     }
 }

@@ -5,8 +5,9 @@ export class Physics {
         this.groundY = 500; // Ground level
     }
     
-    update(fighters, canvasHeight) {
-        this.groundY = canvasHeight - 220; // Set ground based on canvas
+    update(fighters, canvasHeight, canvasWidth = 1280) {
+        const isMobile = window.innerWidth <= 768;
+        this.groundY = canvasHeight - (isMobile ? 120 : 220); // Set ground based on canvas and device
         
         // Apply gravity and movement to each fighter
         fighters.forEach(fighter => {
@@ -22,7 +23,7 @@ export class Physics {
         
         // Keep fighters in bounds
         fighters.forEach(fighter => {
-            this.keepInBounds(fighter);
+            this.keepInBounds(fighter, canvasWidth);
         });
         
         // Keep fighters from overlapping
@@ -52,9 +53,9 @@ export class Physics {
         }
     }
     
-    keepInBounds(fighter) {
-        const minX = 50;
-        const maxX = 1230 - fighter.width;
+    keepInBounds(fighter, canvasWidth = 1280) {
+        const minX = 20;
+        const maxX = canvasWidth - fighter.width - 20;
         
         if (fighter.x < minX) {
             fighter.x = minX;

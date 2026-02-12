@@ -3,7 +3,12 @@ export class Stage {
     constructor(width, height) {
         this.width = width;
         this.height = height;
-        this.groundY = height - 220;
+        this.updateGroundY();
+    }
+    
+    updateGroundY() {
+        const isMobile = window.innerWidth <= 768;
+        this.groundY = this.height - (isMobile ? 120 : 220);
     }
     
     render(ctx) {

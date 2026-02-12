@@ -10,15 +10,17 @@ class Game {
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
         
-        // Set canvas size
-        this.canvas.width = 1280;
-        this.canvas.height = 720;
+        // Set canvas size based on device
+        this.setupCanvas();
         
         // Initialize systems
         this.input = new InputManager();
         this.renderer = new Renderer(this.ctx, this.canvas.width, this.canvas.height);
         this.physics = new Physics();
         this.stage = new Stage(this.canvas.width, this.canvas.height);
+        
+        // Handle resize
+        window.addEventListener('resize', () => this.handleResize());
         
         // Game state
         this.state = 'MENU'; // MENU, CHARACTER_SELECT, FIGHTING, ROUND_END, FIGHT_END
@@ -36,6 +38,41 @@ class Game {
         this.lastTime = 0;
         this.gameLoop = this.gameLoop.bind(this);
         requestAnimationFrame(this.gameLoop);
+    }
+    
+    setupCanvas() {
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+            // Mobile: use full screen width, leave space for controls
+            this.canvas.width = Math.min(window.innerWidth, 800);
+            this.canvas.height = Math.min(window.innerHeight - 200, 500);
+        } else {
+            // Desktop: standard size
+            this.canvas.width = 1280;
+            this.canvas.height = 720;
+        }
+        
+        // Update renderer and stage if they exist
+        if (this.renderer) {
+            this.renderer.width = this.canvas.width;
+            this.renderer.height = this.canvas.height;
+        }
+        if (this.stage) {
+            this.stage.width = this.canvas.width;
+            this.stage.height = this.canvas.height;
+            this.stage.groundY = this.canvas.height - 120;
+        }
+    }
+    
+    handleResize() {
+        this.setupCanvas();
+        
+        // Reposition fighters if in fight
+        if (this.fighters.length >= 2) {
+            this.fighters[0].x = Math.min(this.fighters[0].x, this.canvas.width - 100);
+            this.fighters[1].x = Math.min(this.fighters[1].x, this.canvas.width - 100);
+        }
     }
     
     initUI() {
@@ -83,6 +120,11 @@ class Game {
         document.getElementById('menu').classList.remove('hidden');
         document.getElementById('character-select').classList.add('hidden');
         document.getElementById('controls-screen').classList.add('hidden');
+        
+        // Hide mobile controls in menu
+        if (this.input.isMobile) {
+            this.input.hideMobileControls();
+        }
     }
     
     showControls() {
@@ -135,19 +177,30 @@ class Game {
         this.state = 'FIGHTING';
         document.getElementById('character-select').classList.add('hidden');
         
+        // Show mobile controls if on mobile
+        if (this.input.isMobile) {
+            this.input.showMobileControls();
+        }
+        
+        // Calculate positions based on screen size
+        const isMobile = window.innerWidth <= 768;
+        const p1X = isMobile ? 100 : 300;
+        const p2X = isMobile ? this.canvas.width - 160 : this.canvas.width - 300;
+        const groundY = this.canvas.height - (isMobile ? 120 : 200);
+        
         // Create fighters
         this.fighters = [
             new Fighter(
                 this.selectedCharacters.p1,
-                300,
-                this.canvas.height - 200,
+                p1X,
+                groundY,
                 true,
                 1
             ),
             new Fighter(
                 this.selectedCharacters.p2,
-                this.canvas.width - 300,
-                this.canvas.height - 200,
+                p2X,
+                groundY,
                 false,
                 2
             )
@@ -269,9 +322,15 @@ class Game {
         this.roundNumber++;
         this.updateRoundDisplay();
         
+        // Calculate positions based on screen size
+        const isMobile = window.innerWidth <= 768;
+        const p1X = isMobile ? 100 : 300;
+        const p2X = isMobile ? this.canvas.width - 160 : this.canvas.width - 300;
+        const groundY = this.canvas.height - (isMobile ? 120 : 200);
+        
         // Reset fighters
-        this.fighters[0].reset(300, this.canvas.height - 200);
-        this.fighters[1].reset(this.canvas.width - 300, this.canvas.height - 200);
+        this.fighters[0].reset(p1X, groundY);
+        this.fighters[1].reset(p2X, groundY);
         
         this.state = 'FIGHTING';
         this.showMessage(`ROUND ${this.roundNumber}`, 1000);
@@ -301,7 +360,7 @@ class Game {
         });
         
         // Apply physics
-        this.physics.update(this.fighters, this.canvas.height);
+        this.physics.update(this.fighters, this.canvas.height, this.canvas.width);
         
         // Check for round end
         if (this.fighters[0].health <= 0 || this.fighters[1].health <= 0) {

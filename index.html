@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Mortal Kombat</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -96,6 +98,28 @@
                 </div>
             </div>
             <button id="back-btn" class="menu-btn">BACK</button>
+        </div>
+    </div>
+    
+        <!-- Mobile Controls -->
+        <div id="mobile-controls" class="hidden">
+            <div class="mobile-left">
+                <div class="dpad">
+                    <button class="dpad-btn dpad-up" data-action="up">▲</button>
+                    <button class="dpad-btn dpad-left" data-action="left">◀</button>
+                    <button class="dpad-btn dpad-right" data-action="right">▶</button>
+                    <button class="dpad-btn dpad-down" data-action="down">▼</button>
+                </div>
+            </div>
+            <div class="mobile-right">
+                <div class="attack-buttons">
+                    <button class="attack-btn punch-light" data-action="lightPunch">LP</button>
+                    <button class="attack-btn punch-heavy" data-action="heavyPunch">HP</button>
+                    <button class="attack-btn kick-light" data-action="lightKick">LK</button>
+                    <button class="attack-btn kick-heavy" data-action="heavyKick">HK</button>
+                    <button class="attack-btn block-btn" data-action="block">BLK</button>
+                </div>
+            </div>
         </div>
     </div>
     
