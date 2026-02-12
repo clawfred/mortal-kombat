@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortal Kombat</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui">
+            <!-- Health bars -->
+            <div id="hud">
+                <div class="player-info" id="player1-info">
+                    <div class="player-name">PLAYER 1</div>
+                    <div class="health-container">
+                        <div class="health-bar" id="player1-health"></div>
+                    </div>
+                </div>
+                <div id="timer">99</div>
+                <div class="player-info" id="player2-info">
+                    <div class="player-name">PLAYER 2</div>
+                    <div class="health-container">
+                        <div class="health-bar" id="player2-health"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Round indicators -->
+            <div id="round-indicators">
+                <div class="rounds" id="player1-rounds">
+                    <div class="round-dot"></div>
+                    <div class="round-dot"></div>
+                </div>
+                <div id="round-text">ROUND 1</div>
+                <div class="rounds" id="player2-rounds">
+                    <div class="round-dot"></div>
+                    <div class="round-dot"></div>
+                </div>
+            </div>
+            
+            <!-- Game messages -->
+            <div id="message"></div>
+        </div>
+        
+        <!-- Main Menu -->
+        <div id="menu" class="screen">
+            <h1>MORTAL KOMBAT</h1>
+            <div class="menu-options">
+                <button id="start-btn" class="menu-btn">START GAME</button>
+                <button id="controls-btn" class="menu-btn">CONTROLS</button>
+            </div>
+        </div>
+        
+        <!-- Character Select -->
+        <div id="character-select" class="screen hidden">
+            <h2>SELECT YOUR FIGHTER</h2>
+            <div class="character-grid">
+                <div class="character-card" data-character="scorpion">
+                    <div class="character-portrait scorpion-portrait"></div>
+                    <div class="character-name">SCORPION</div>
+                </div>
+                <div class="character-card" data-character="subzero">
+                    <div class="character-portrait subzero-portrait"></div>
+                    <div class="character-name">SUB-ZERO</div>
+                </div>
+            </div>
+            <div id="selection-status">
+                <span id="p1-status">P1: Not Ready</span>
+                <span id="p2-status">P2: Not Ready</span>
+            </div>
+        </div>
+        
+        <!-- Controls Screen -->
+        <div id="controls-screen" class="screen hidden">
+            <h2>CONTROLS</h2>
+            <div class="controls-layout">
+                <div class="player-controls">
+                    <h3>PLAYER 1</h3>
+                    <p>Arrow Keys - Move</p>
+                    <p>A - Light Punch</p>
+                    <p>S - Heavy Punch</p>
+                    <p>D - Light Kick</p>
+                    <p>F - Heavy Kick</p>
+                    <p>Space - Block</p>
+                </div>
+                <div class="player-controls">
+                    <h3>PLAYER 2</h3>
+                    <p>WASD - Move</p>
+                    <p>J - Light Punch</p>
+                    <p>K - Heavy Punch</p>
+                    <p>L - Light Kick</p>
+                    <p>; - Heavy Kick</p>
+                    <p>Shift - Block</p>
+                </div>
+            </div>
+            <button id="back-btn" class="menu-btn">BACK</button>
+        </div>
+    </div>
+    
+    <script type="module" src="game.js"></script>
+</body>
+</html>
